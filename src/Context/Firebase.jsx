@@ -8,8 +8,8 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc,getDocs } from "firebase/firestore";
-
+import { getFirestore, collection, addDoc,getDocs,getDoc,doc } from "firebase/firestore";
+// import { ref } from "firebase/database";
 //creating context
 const FirebaseContext = createContext(null);
 
@@ -78,15 +78,34 @@ export const FirebaseProvider = (props) => {
         return getDocs(collection(firestore,"books"))
     }
 
+//get details of book
+ const getBookById = (id) => {
+  return getDoc(doc(firestore, "books", id));
+};  
+
+// functionality for placing order
+const placeOrder = async (bookId, qty) => {
+    const collectionRef = collection(firestore, "books", bookId, "orders");
+    const result = await addDoc(collectionRef, {
+      userID: user.uid,
+      userEmail: user.email,
+      displayName: user.displayName,
+      qty: Number(qty),
+    });
+    return result;
+  };
+
   return (
     <FirebaseContext.Provider
       value={{
         signupWithGoogle,
         signupWithEmailAndPassword,
         singinUserWithEmailAndPassword,
-        isLoggedIn,
         handleCreateNewListing,
-        listAllBooks
+        listAllBooks,
+        getBookById,
+        placeOrder,
+        isLoggedIn,
       }}
     >
       {props.children}
