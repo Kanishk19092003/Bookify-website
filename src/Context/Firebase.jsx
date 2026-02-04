@@ -1,4 +1,4 @@
-import { createContext, useContext,useState,useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
+import { getFirestore, collection, addDoc } from "firebase/firestore";
 
 //creating context
 const FirebaseContext = createContext(null);
@@ -24,33 +25,30 @@ const firebaseConfig = {
 //custom hook
 export const useFirebase = () => useContext(FirebaseContext);
 
-//intialize firebase (step 1)
-const firebaseApp = initializeApp(firebaseConfig);
-//firebase authentication using email and password
-const firebaseAuth = getAuth(firebaseApp);
-//google authentication
-const googleProvider = new GoogleAuthProvider();
+const firebaseApp = initializeApp(firebaseConfig); //intialize firebase (step 1)
+const firebaseAuth = getAuth(firebaseApp); //firebase authentication using email and password
+const googleProvider = new GoogleAuthProvider(); //google authentication
+const firestore = getFirestore(firebaseApp); //firestore data
 
 //firebase provider for all the pages and components
 export const FirebaseProvider = (props) => {
-    
-    //check user login or not 
-    const [user,setUser] = useState(null);
-    useEffect(()=>{
-        onAuthStateChanged(firebaseAuth ,(user)=>{
-            if(user) setUser(user);
-            else setUser(null);
-        })
-    },[])
+  //check user login or not
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    onAuthStateChanged(firebaseAuth, (user) => {
+      if (user) setUser(user);
+      else setUser(null);
+    });
+  }, []);
 
   //signUp
   const signupWithEmailAndPassword = (email, password) => {
-    createUserWithEmailAndPassword(firebaseAuth, email, password);
+    return createUserWithEmailAndPassword(firebaseAuth, email, password);
   };
-  
+
   //signIn
   const singinUserWithEmailAndPassword = (email, password) => {
-    signInWithEmailAndPassword(firebaseAuth, email, password);
+    return signInWithEmailAndPassword(firebaseAuth, email, password);
   };
 
   //signup wihr google
@@ -59,13 +57,30 @@ export const FirebaseProvider = (props) => {
   //checking user
   const isLoggedIn = user ? true : false;
 
+  //addlisting
+  const handleCreateNewListing = async (name, isbn, price) => {
+  if (!user) {
+    throw new Error("User not logged in");
+  }
+
+  return await addDoc(collection(firestore, "books"), {
+    name,
+    isbn,
+    price,
+    userID: user.uid,
+    userEmail: user.email,
+    createdAt: new Date(),
+  });
+};
+
   return (
     <FirebaseContext.Provider
       value={{
         signupWithGoogle,
         signupWithEmailAndPassword,
         singinUserWithEmailAndPassword,
-        isLoggedIn
+        isLoggedIn,
+        handleCreateNewListing,
       }}
     >
       {props.children}
