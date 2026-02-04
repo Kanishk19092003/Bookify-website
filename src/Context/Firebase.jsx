@@ -8,7 +8,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { getFirestore, collection, addDoc,getDocs } from "firebase/firestore";
 
 //creating context
 const FirebaseContext = createContext(null);
@@ -73,6 +73,11 @@ export const FirebaseProvider = (props) => {
   });
 };
 
+//get data from databse on Home page
+    const listAllBooks = () =>{
+        return getDocs(collection(firestore,"books"))
+    }
+
   return (
     <FirebaseContext.Provider
       value={{
@@ -81,6 +86,7 @@ export const FirebaseProvider = (props) => {
         singinUserWithEmailAndPassword,
         isLoggedIn,
         handleCreateNewListing,
+        listAllBooks
       }}
     >
       {props.children}
