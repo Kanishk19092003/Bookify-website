@@ -10,6 +10,8 @@ import Login from "./pages/Login";
 import List from "./pages/List";
 import Home from "./pages/Home";
 import BookDetailPage from "./pages/Detail";
+import OrderPage from "./pages/ViewOrder";
+import ViewOrderDetails from "./pages/ViewOrderDetail";
 
 function App() {
 
@@ -22,6 +24,8 @@ function App() {
       <Route path='/register' element={<Register/>}/>
       <Route path='/book/list' element={<List/>}/>
       <Route path='/book/view/:bookId' element={<BookDetailPage/>}/>
+      <Route path='/book/orders' element={<OrderPage/>}/>
+      <Route path='/books/orders/:bookId' element={<ViewOrderDetails/>}/>
 
     </Routes>
     </div>

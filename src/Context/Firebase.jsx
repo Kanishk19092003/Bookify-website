@@ -8,7 +8,16 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getFirestore, collection, addDoc,getDocs,getDoc,doc } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  doc,
+  query,
+  where
+} from "firebase/firestore";
 // import { ref } from "firebase/database";
 //creating context
 const FirebaseContext = createContext(null);
@@ -59,32 +68,32 @@ export const FirebaseProvider = (props) => {
 
   //addlisting
   const handleCreateNewListing = async (name, isbn, price) => {
-  if (!user) {
-    throw new Error("User not logged in");
-  }
-
-  return await addDoc(collection(firestore, "books"), {
-    name,
-    isbn,
-    price,
-    userID: user.uid,
-    userEmail: user.email,
-    createdAt: new Date(),
-  });
-};
-
-//get data from databse on Home page
-    const listAllBooks = () =>{
-        return getDocs(collection(firestore,"books"))
+    if (!user) {
+      throw new Error("User not logged in");
     }
 
-//get details of book
- const getBookById = (id) => {
-  return getDoc(doc(firestore, "books", id));
-};  
+    return await addDoc(collection(firestore, "books"), {
+      name,
+      isbn,
+      price,
+      userID: user.uid,
+      userEmail: user.email,
+      createdAt: new Date(),
+    });
+  };
 
-// functionality for placing order
-const placeOrder = async (bookId, qty) => {
+  //get data from databse on Home page
+  const listAllBooks = () => {
+    return getDocs(collection(firestore, "books"));
+  };
+
+  //get details of book
+  const getBookById = (id) => {
+    return getDoc(doc(firestore, "books", id));
+  };
+
+  // functionality for placing order
+  const placeOrder = async (bookId, qty) => {
     const collectionRef = collection(firestore, "books", bookId, "orders");
     const result = await addDoc(collectionRef, {
       userID: user.uid,
@@ -92,6 +101,21 @@ const placeOrder = async (bookId, qty) => {
       displayName: user.displayName,
       qty: Number(qty),
     });
+    return result;
+  };
+
+  //query for fetching orders
+  const fetchMyBooks = async (userId) => {
+    const collectionRef = collection(firestore, "books");
+    const q = query(collectionRef, where("userID", "==", userId));
+
+    const result = await getDocs(q);
+    return result;
+  };
+
+  const getOrders = async (bookId) => {
+    const collectionRef = collection(firestore, "books", bookId, "orders");
+    const result = await getDocs(collectionRef);
     return result;
   };
 
@@ -105,6 +129,9 @@ const placeOrder = async (bookId, qty) => {
         listAllBooks,
         getBookById,
         placeOrder,
+        fetchMyBooks,
+        getOrders,
+        user,
         isLoggedIn,
       }}
     >
