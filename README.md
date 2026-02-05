@@ -1,16 +1,95 @@
-# React + Vite
+# 📚 Bookify – E-Book Store
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Bookify is a simple e-book store web application built using **React**, **Bootstrap**, and **Firebase**.  
+Users can upload books, explore books uploaded by others, and place orders.
 
-Currently, two official plugins are available:
+This project is my **first Firebase demo project**, where the primary focus was on **core functionality** rather than UI/UX polish.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## 🚀 Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔗 **Live Website:**  
+https://bookify-store19.netlify.app/
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## ✨ Features
+
+- 📤 Upload books to the platform  
+- 📚 View books uploaded by other users  
+- 🛒 Order available books  
+- 🔐 Firebase Authentication (basic auth setup)
+- ☁️ Firebase Firestore for database
+- 📦 Firebase Storage for book uploads
+- 🔀 Multiple routes using React Router DOM
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js  
+- **Styling:** Bootstrap  
+- **Routing:** React Router DOM  
+- **Backend / BaaS:** Firebase  
+  - Authentication  
+  - Firestore Database  
+  - Firebase Storage  
+- **Hosting:** Netlify  
+
+---
+
+## 🧭 Routing Overview
+
+This project uses **React Router DOM** to handle multiple routes such as:
+
+- Home page
+- Book listing page
+- Book upload page
+- Book details page
+- Order page
+
+This helps in creating a smooth single-page application (SPA) experience.
+
+---
+
+## 🎯 Project Objective
+
+The main goal of this project was to:
+
+- Learn and implement **Firebase** in a real project  
+- Understand authentication, database operations, and file storage  
+- Focus on **functional flow** rather than advanced UI design  
+
+UI improvements are planned for future versions.
+
+---
+
+## 📌 Future Improvements
+
+- Improve UI/UX design
+- Add search and filter functionality
+- Implement order history
+- Add admin panel
+- Enhance validation and error handling
+
+---
+
+## 🧠 Learnings
+
+- Firebase Authentication flow
+- Firestore CRUD operations
+- Firebase Storage for file uploads
+- React Router DOM for navigation
+- Managing state and async operations in React
+
+---
+
+## 📂 Installation & Setup (Optional)
+
+```bash
+git clone https://github.com/your-username/bookify.git
+cd bookify
+npm install
+npm start
+
